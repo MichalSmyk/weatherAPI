@@ -2,13 +2,15 @@ const WeatherClient = require('./weatherClient');
 const Weather = require('./weather');
 
 describe('weather class', () => {
-  let weather;
+  let weatherMock;
+  let client;
   const mockClient = {
     fetchWeatherData: jest.fn(),
   };
 
   beforeEach(() => {
-    weather = new Weather(mockClient);
+    weatherMock = new Weather(mockClient);
+    client = new WeatherClient(client);
   });
 
   it('load() loads city weathr data, getWeatherData() returns it', (done) => {
@@ -17,12 +19,12 @@ describe('weather class', () => {
       name: 'london',
       temp: 8,
     });
-    weather.load("london").then(() => {
-      expect(mockClient.fetchWeatherData).toHvaeBeenCalledWith('london');
-      const data = weather.getWeatherData();
+    weatherMock.load("london").then(() => {
+      expect(mockClient.fetchWeatherData).toHaveBeenCalledWith('london');
+      const data = weatherMock.getWeatherData();
       expect(data.name).toBe("london");
       expect(data.temp).toBe(8);
       done();
     })
-  })
+  });
 })
